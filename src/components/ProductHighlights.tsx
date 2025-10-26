@@ -7,21 +7,39 @@ const ProductHighlights = () => {
   const products = [
     {
       image: product1,
-      name: "Kitchen Essentials Set",
-      description: "Available in 7 days",
-      price: "₦45,000",
+      name: "Classy Chafing Dish",
+      description: "MOQ: 2 pieces",
+      price: "₦85,000",
     },
     {
       image: product2,
-      name: "Office Supplies Bundle",
-      description: "Available in 5 days",
-      price: "₦32,000",
+      name: "Men's Crocs",
+      description: "MOQ: 20 pairs",
+      price: "₦28,000",
     },
     {
       image: product3,
-      name: "Home Decor Collection",
-      description: "Available in 10 days",
-      price: "₦58,000",
+      name: "Classy Plate Rack",
+      description: "Available for preorder",
+      price: "₦35,000",
+    },
+    {
+      image: product1,
+      name: "600L LG Ice Maker Fridge",
+      description: "Premium-grade with ice maker",
+      price: "₦1,150,000",
+    },
+    {
+      image: product2,
+      name: "Quality & Modern Compress Sofa",
+      description: "Space-saving & stylish",
+      price: "₦450,000",
+    },
+    {
+      image: product3,
+      name: "Ice Maker Machine",
+      description: "Fast-performing",
+      price: "₦240,000",
     },
   ];
 
