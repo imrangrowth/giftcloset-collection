@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 
 interface ProductCardProps {
   image: string;
@@ -10,32 +9,34 @@ interface ProductCardProps {
 
 const ProductCard = ({ image, name, description, price }: ProductCardProps) => {
   return (
-    <Card className="overflow-hidden bg-card border-border/50 hover:shadow-lg transition-shadow duration-300 group">
-      <div className="aspect-square overflow-hidden bg-secondary">
-        <img 
-          src={image} 
-          alt={name} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 blur-md"
-        />
-      </div>
-      
-      <div className="p-6 space-y-4">
-        <div className="space-y-2">
-          <h3 className="text-xl font-semibold">{name}</h3>
-          <p className="text-sm text-muted-foreground">{description}</p>
+    <div className="group">
+      <div className="relative overflow-hidden bg-secondary/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_15px_50px_rgb(0,0,0,0.2)] transition-all duration-500">
+        <div className="aspect-[4/5] overflow-hidden">
+          <img 
+            src={image} 
+            alt={name} 
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 blur-md"
+          />
         </div>
         
-        <div className="flex items-center justify-between">
-          <p className="text-2xl font-bold text-primary">{price}</p>
-          <Button 
-            size="sm" 
-            className="rounded-full font-medium"
-          >
-            Preorder
-          </Button>
+        <div className="p-6 bg-background space-y-3">
+          <div className="space-y-1">
+            <h3 className="text-lg font-bold tracking-tight">{name}</h3>
+            <p className="text-xs text-muted-foreground uppercase tracking-wide">{description}</p>
+          </div>
+          
+          <div className="flex items-center justify-between pt-2">
+            <p className="text-2xl font-bold">{price}</p>
+            <Button 
+              size="sm" 
+              className="font-semibold"
+            >
+              Preorder
+            </Button>
+          </div>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 
