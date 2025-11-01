@@ -73,7 +73,7 @@ const Products = () => {
     },
     {
       image: product2,
-      name: "Wholesale Drinks Import Deal (1 Ton)",
+      name: "Wholesale Plates Import Deal (1 Ton)",
       description: "40 cartons - bulk preorder",
       price: "₦2,000,000",
     },
