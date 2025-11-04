@@ -6,6 +6,7 @@ export interface Product {
   name: string;
   description: string;
   price: string;
+  status: "pre_order" | "in_stock";
   images: string[];
 }
 
@@ -37,6 +38,7 @@ export const useProducts = () => {
             name: product.name,
             description: product.description,
             price: product.price,
+            status: product.status as "pre_order" | "in_stock",
             images: images.map((img) => img.image_url),
           };
         })

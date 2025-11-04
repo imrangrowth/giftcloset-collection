@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Upload, X } from "lucide-react";
@@ -16,6 +17,7 @@ const Admin = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [status, setStatus] = useState<"pre_order" | "in_stock">("in_stock");
   const [images, setImages] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
 
@@ -43,7 +45,7 @@ const Admin = () => {
       // 1. Create product
       const { data: product, error: productError } = await supabase
         .from("products")
-        .insert({ name, description, price })
+        .insert({ name, description, price, status })
         .select()
         .single();
 
@@ -85,6 +87,7 @@ const Admin = () => {
       setName("");
       setDescription("");
       setPrice("");
+      setStatus("in_stock");
       setImages([]);
       
       // Redirect to products page
@@ -143,6 +146,20 @@ const Admin = () => {
                       onChange={(e) => setPrice(e.target.value)}
                       placeholder="e.g., ₦20,000"
                     />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Product Status</Label>
+                    <RadioGroup value={status} onValueChange={(value: "pre_order" | "in_stock") => setStatus(value)}>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="in_stock" id="in_stock" />
+                        <Label htmlFor="in_stock" className="cursor-pointer">In Stock</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="pre_order" id="pre_order" />
+                        <Label htmlFor="pre_order" className="cursor-pointer">Pre-Order</Label>
+                      </div>
+                    </RadioGroup>
                   </div>
 
                   <div className="space-y-2">
