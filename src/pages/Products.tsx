@@ -4,122 +4,11 @@ import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import product1 from "@/assets/product-1.jpg";
-import product2 from "@/assets/product-2.jpg";
-import product3 from "@/assets/product-3.jpg";
+import { useProducts } from "@/hooks/useProducts";
 
 const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const products = [
-    {
-      images: [product1],
-      name: "Classy Chafing Dish",
-      description: "MOQ: 2 pieces",
-      price: "₦85,000",
-    },
-    {
-      images: [product2],
-      name: "Men's Crocs",
-      description: "MOQ: 20 pairs",
-      price: "₦28,000",
-    },
-    {
-      images: [product3],
-      name: "Classy Plate Rack",
-      description: "Stylish multi-layer dish rack",
-      price: "₦35,000",
-    },
-    {
-      images: [product1],
-      name: "600L LG Ice Maker Fridge",
-      description: "Premium-grade with built-in ice maker",
-      price: "₦1,150,000",
-    },
-    {
-      images: [product2],
-      name: "Complete Bed Frame",
-      description: "Excluding mattress & pillows",
-      price: "₦1,500,000",
-    },
-    {
-      images: [product3],
-      name: "9L Unique Chafing Dish",
-      description: "Large-capacity buffet server",
-      price: "₦130,000",
-    },
-    {
-      images: [product1],
-      name: "Ice Maker Machine",
-      description: "Fast-performing ice maker",
-      price: "₦240,000",
-    },
-    {
-      images: [product2],
-      name: "Quality & Modern Compress Sofa",
-      description: "Space-saving, stylish sofa",
-      price: "₦450,000",
-    },
-    {
-      images: [product3],
-      name: "Industrial Tiger Nut Processing Machine",
-      description: "Efficient industrial machine",
-      price: "₦250,000",
-    },
-    {
-      images: [product1],
-      name: "6L Chafing Dish",
-      description: "Ideal for small events",
-      price: "₦120,000",
-    },
-    {
-      images: [product2],
-      name: "Wholesale Plates Import Deal (1 Ton)",
-      description: "40 cartons - bulk preorder",
-      price: "₦2,000,000",
-    },
-    {
-      images: [product3],
-      name: "Wholesale Drinks Import Deal (Half Ton)",
-      description: "20 cartons - bulk preorder",
-      price: "₦1,000,000",
-    },
-    {
-      images: [product1],
-      name: "6L Luxury Arabic Chafing Dish",
-      description: "Gold-finish with Arabic design",
-      price: "₦70,000",
-    },
-    {
-      images: [product2],
-      name: "Vacuum Sealing Machine",
-      description: "MOQ: 50 pieces",
-      price: "₦25,000",
-    },
-    {
-      images: [product3],
-      name: "16-Piece Complete Dinner Set",
-      description: "Elegant porcelain dinnerware",
-      price: "₦25,000",
-    },
-    {
-      images: [product1],
-      name: "Luxury Kids 2-Piece Set",
-      description: "MOQ: 30 sets",
-      price: "₦20,000",
-    },
-    {
-      images: [product2],
-      name: "300W Mobile Power Supply",
-      description: "Portable & reliable",
-      price: "₦125,000",
-    },
-    {
-      images: [product3],
-      name: "Bamboo Spice Jar Complete Set",
-      description: "Eco-friendly storage",
-      price: "₦28,000",
-    },
-  ];
+  const { data: products = [], isLoading } = useProducts();
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -154,16 +43,24 @@ const Products = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredProducts.map((product, index) => (
-                <ProductCard key={index} {...product} />
-              ))}
-            </div>
-            
-            {filteredProducts.length === 0 && (
-              <p className="text-center text-muted-foreground mt-8">
-                No products found matching your search.
-              </p>
+            {isLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading products...</p>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredProducts.map((product) => (
+                    <ProductCard key={product.id} {...product} />
+                  ))}
+                </div>
+                
+                {filteredProducts.length === 0 && (
+                  <p className="text-center text-muted-foreground mt-8">
+                    No products found matching your search.
+                  </p>
+                )}
+              </>
             )}
           </div>
         </div>
