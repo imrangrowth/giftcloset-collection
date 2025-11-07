@@ -16,11 +16,11 @@ const ProductHighlights = () => {
   return (
     <section className="section-padding section-spacing bg-secondary/30">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl md:text-3xl font-bold mb-3">
             Featured Preorders
           </h2>
-          <p className="text-muted-foreground text-lg mb-8">
+          <p className="text-muted-foreground text-base mb-6">
             Quality products delivered directly from China to your doorstep
           </p>
           
@@ -42,7 +42,7 @@ const ProductHighlights = () => {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} {...product} />
               ))}

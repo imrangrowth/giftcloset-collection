@@ -101,15 +101,22 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    font-size: 15px;
+  }
+  
+  @media (max-width: 768px) {
+    body {
+      font-size: 14px;
+    }
   }
 }
 
 @layer utilities {
   .section-padding {
-    @apply px-6 md:px-12 lg:px-24;
+    @apply px-4 md:px-8 lg:px-16;
   }
   
   .section-spacing {
-    @apply py-16 md:py-24 lg:py-32;
+    @apply py-10 md:py-14 lg:py-20;
   }
 }
