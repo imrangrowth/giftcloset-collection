@@ -19,21 +19,21 @@ const ProductCard = ({ id, images, name, description, price, status }: ProductCa
   return (
     <div className="group">
       <div className="relative overflow-hidden bg-background transition-all duration-500">
-        <div className="aspect-[4/3] overflow-hidden bg-muted/30 relative">
+        <div className="overflow-hidden relative">
           <Badge 
             className="absolute top-4 right-4 z-10"
             variant={status === "pre_order" ? "default" : "secondary"}
           >
             {status === "pre_order" ? "Pre-Order" : "In Stock"}
           </Badge>
-          <Carousel className="w-full h-full">
+          <Carousel className="w-full">
             <CarouselContent>
               {images.map((image, index) => (
                 <CarouselItem key={index}>
                   <img 
                     src={image} 
                     alt={`${name} - Image ${index + 1}`} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-[350px] object-contain bg-muted rounded-lg"
                   />
                 </CarouselItem>
               ))}
