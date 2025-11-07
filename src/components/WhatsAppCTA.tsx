@@ -8,8 +8,8 @@ const WhatsAppCTA = () => {
 
   return (
     <section className="section-padding section-spacing bg-primary text-primary-foreground">
-      <div className="max-w-4xl mx-auto text-center space-y-6">
-        <div className="space-y-3">
+      <div className="container-max text-center space-y-5">
+        <div className="space-y-2">
           <MessageCircle className="w-12 h-12 mx-auto" />
           <h2 className="text-2xl md:text-3xl font-bold">
             Stay Updated on Every Shipment

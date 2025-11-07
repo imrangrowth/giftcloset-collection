@@ -5,8 +5,8 @@ import aboutImage from "@/assets/about-image.jpg";
 const AboutPreview = () => {
   return (
     <section className="section-padding section-spacing bg-secondary/30">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div className="container-max">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           <div className="space-y-5">
             <h2 className="text-2xl md:text-3xl font-bold">
               About Gift Closet Importation

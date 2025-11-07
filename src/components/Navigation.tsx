@@ -35,7 +35,7 @@ const Navigation = () => {
       }`}
     >
       <div className="section-padding">
-        <div className="flex items-center justify-between h-20">
+        <div className="container-max flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <h1 className="text-xl md:text-2xl font-bold text-foreground">

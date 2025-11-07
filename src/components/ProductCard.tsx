@@ -47,10 +47,10 @@ const ProductCard = ({ id, images, name, description, price, status }: ProductCa
           </Carousel>
         </div>
         
-        <div className="py-8 space-y-4 text-center">
-          <h3 className="text-3xl font-light tracking-wide">{name}</h3>
-          <p className="text-sm text-muted-foreground">{description}</p>
-          <p className="text-xl font-semibold pt-2">{price}</p>
+        <div className="py-5 space-y-3 text-center">
+          <h3 className="text-lg font-semibold tracking-wide">{name}</h3>
+          <p className="text-sm text-muted-foreground line-clamp-2">{description}</p>
+          <p className="text-lg font-semibold pt-1">{price}</p>
           <Button 
             variant="outline"
             size="sm" 

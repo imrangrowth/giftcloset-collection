@@ -26,7 +26,7 @@ const HowItWorks = () => {
 
   return (
     <section className="section-padding section-spacing">
-      <div className="max-w-7xl mx-auto">
+      <div className="container-max">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">How It Works</h2>
           <p className="text-muted-foreground text-base">

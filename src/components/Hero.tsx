@@ -12,7 +12,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-[75vh] flex items-center section-padding pt-24 pb-12">
+    <section className="relative min-h-[70vh] flex items-center section-padding pt-20 pb-10">
       <div className="absolute inset-0 -z-10 opacity-5">
         <img 
           src={heroImage} 
@@ -21,7 +21,7 @@ const Hero = () => {
         />
       </div>
       
-      <div className="max-w-4xl mx-auto text-center space-y-6">
+      <div className="container-max text-center space-y-5">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
           Shop Smarter.{" "}
           <span className="text-primary">Quality Assurance.</span>{" "}

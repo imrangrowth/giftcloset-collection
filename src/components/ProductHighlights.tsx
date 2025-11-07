@@ -15,7 +15,7 @@ const ProductHighlights = () => {
 
   return (
     <section className="section-padding section-spacing bg-secondary/30">
-      <div className="max-w-7xl mx-auto">
+      <div className="container-max">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">
             Featured Preorders

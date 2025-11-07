@@ -4,8 +4,8 @@ import { Instagram, Phone, Mail, MapPin } from "lucide-react";
 const Footer = () => {
   return (
     <footer className="bg-background border-t border-primary/10">
-      <div className="section-padding py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="section-padding py-12">
+        <div className="container-max grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About */}
           <div>
             <h3 className="text-lg font-bold mb-4">About Gift Closet</h3>
@@ -80,7 +80,7 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-border text-center">
+        <div className="mt-8 pt-6 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} Gift Closet Importation. All rights reserved.
           </p>
