@@ -52,8 +52,9 @@ const PaymentSuccess = () => {
                   <>
                     <CheckCircle className="h-16 w-16 mx-auto text-green-500 mb-4" />
                     <CardTitle>Payment Successful!</CardTitle>
-                    <CardDescription>
-                      Your order has been confirmed. We'll send you an email with the details.
+                    <CardDescription className="space-y-2">
+                      <p>Your order has been confirmed. We'll send you an email with the details.</p>
+                      <p className="font-medium">Our team will contact you shortly to confirm your order and delivery details.</p>
                     </CardDescription>
                   </>
                 )}

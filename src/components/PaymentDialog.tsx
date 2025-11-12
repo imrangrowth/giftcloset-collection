@@ -61,8 +61,11 @@ const PaymentDialog = ({ open, onOpenChange, productId, productName, price }: Pa
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Complete Your Order</DialogTitle>
-          <DialogDescription>
-            {productName} - {price}
+          <DialogDescription className="space-y-1">
+            <div>{productName} - {price}</div>
+            <div className="text-xs italic pt-1">
+              You will be contacted after successful payment to confirm your order details.
+            </div>
           </DialogDescription>
         </DialogHeader>
 

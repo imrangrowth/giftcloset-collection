@@ -51,6 +51,11 @@ const ProductCard = ({ id, images, name, description, price, status }: ProductCa
           <h3 className="text-lg font-semibold tracking-wide">{name}</h3>
           <p className="text-sm text-muted-foreground line-clamp-2">{description}</p>
           <p className="text-lg font-semibold pt-1">{price}</p>
+          {status === "pre_order" && (
+            <p className="text-xs text-muted-foreground italic">
+              Delivery in 40 days
+            </p>
+          )}
           <Button 
             variant="outline"
             size="sm" 
