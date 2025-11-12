@@ -22,6 +22,7 @@ const Admin = () => {
   const [price, setPrice] = useState("");
   const [status, setStatus] = useState<"pre_order" | "in_stock">("in_stock");
   const [images, setImages] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<Array<{ id: string; url: string }>>([]);
   const [uploading, setUploading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -36,7 +37,7 @@ const Admin = () => {
     setImages(images.filter((_, i) => i !== index));
   };
 
-  const handleEdit = (productId: string) => {
+  const handleEdit = async (productId: string) => {
     const product = products.find((p) => p.id === productId);
     if (product) {
       setEditingId(productId);
@@ -45,7 +46,36 @@ const Admin = () => {
       setPrice(product.price);
       setStatus(product.status);
       setImages([]);
+      
+      // Fetch existing images
+      const { data: imageRecords } = await supabase
+        .from("product_images")
+        .select("id, image_url")
+        .eq("product_id", productId)
+        .order("display_order");
+      
+      if (imageRecords) {
+        setExistingImages(imageRecords.map(img => ({ id: img.id, url: img.image_url })));
+      }
+      
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const removeExistingImage = async (imageId: string, imageUrl: string) => {
+    try {
+      // Delete from storage
+      const filePath = imageUrl.split("/").slice(-2).join("/");
+      await supabase.storage.from("product-images").remove([filePath]);
+      
+      // Delete from database
+      await supabase.from("product_images").delete().eq("id", imageId);
+      
+      // Update local state
+      setExistingImages(existingImages.filter(img => img.id !== imageId));
+      toast.success("Image removed successfully!");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to remove image");
     }
   };
 
@@ -157,6 +187,7 @@ const Admin = () => {
       setPrice("");
       setStatus("in_stock");
       setImages([]);
+      setExistingImages([]);
       setEditingId(null);
       
       // Refetch products
@@ -253,26 +284,59 @@ const Admin = () => {
                       </Label>
                     </div>
 
-                    {images.length > 0 && (
-                      <div className="grid grid-cols-3 gap-4 mt-4">
-                        {images.map((image, index) => (
-                          <div key={index} className="relative group">
-                            <img
-                              src={URL.createObjectURL(image)}
-                              alt={`Preview ${index + 1}`}
-                              className="w-full h-32 object-cover rounded-lg"
-                            />
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              size="icon"
-                              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                              onClick={() => removeImage(index)}
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
+                    {(existingImages.length > 0 || images.length > 0) && (
+                      <div className="space-y-4 mt-4">
+                        {existingImages.length > 0 && (
+                          <div>
+                            <p className="text-sm font-medium mb-2">Existing Images</p>
+                            <div className="grid grid-cols-3 gap-4">
+                              {existingImages.map((image) => (
+                                <div key={image.id} className="relative group">
+                                  <img
+                                    src={image.url}
+                                    alt="Existing product"
+                                    className="w-full h-32 object-cover rounded-lg"
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="destructive"
+                                    size="icon"
+                                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    onClick={() => removeExistingImage(image.id, image.url)}
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
                           </div>
-                        ))}
+                        )}
+                        
+                        {images.length > 0 && (
+                          <div>
+                            <p className="text-sm font-medium mb-2">New Images</p>
+                            <div className="grid grid-cols-3 gap-4">
+                              {images.map((image, index) => (
+                                <div key={index} className="relative group">
+                                  <img
+                                    src={URL.createObjectURL(image)}
+                                    alt={`Preview ${index + 1}`}
+                                    className="w-full h-32 object-cover rounded-lg"
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="destructive"
+                                    size="icon"
+                                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    onClick={() => removeImage(index)}
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -296,6 +360,7 @@ const Admin = () => {
                           setPrice("");
                           setStatus("in_stock");
                           setImages([]);
+                          setExistingImages([]);
                         }}
                       >
                         Cancel
