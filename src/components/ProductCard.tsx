@@ -33,6 +33,7 @@ const ProductCard = ({ id, images, name, description, price, status }: ProductCa
                   <img 
                     src={image} 
                     alt={`${name} - Image ${index + 1}`} 
+                    loading="lazy"
                     className="w-full h-[320px] object-contain bg-muted rounded-md"
                   />
                 </CarouselItem>
