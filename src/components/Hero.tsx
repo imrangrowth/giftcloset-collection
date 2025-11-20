@@ -4,7 +4,7 @@ import heroImage from "@/assets/hero-bg.jpg";
 
 const Hero = () => {
   const handleWhatsAppClick = () => {
-    window.open("https://wa.me/2347038929042", "_blank");
+    window.open("https://chat.whatsapp.com/LOzISmHehixCiYon4yM1np", "_blank");
   };
 
   const handlePreorderClick = () => {
