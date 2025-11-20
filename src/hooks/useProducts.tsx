@@ -14,37 +14,39 @@ export const useProducts = () => {
   return useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      // Fetch products with their images
+      // Fetch products with their images in a single query using join
       const { data: products, error: productsError } = await supabase
         .from("products")
-        .select("*")
+        .select(`
+          id,
+          name,
+          description,
+          price,
+          status,
+          product_images (
+            image_url,
+            display_order
+          )
+        `)
         .order("created_at", { ascending: false });
 
       if (productsError) throw productsError;
 
-      // Fetch images for all products
-      const productsWithImages: Product[] = await Promise.all(
-        products.map(async (product) => {
-          const { data: images, error: imagesError } = await supabase
-            .from("product_images")
-            .select("image_url")
-            .eq("product_id", product.id)
-            .order("display_order");
-
-          if (imagesError) throw imagesError;
-
-          return {
-            id: product.id,
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            status: product.status as "pre_order" | "in_stock",
-            images: images.map((img) => img.image_url),
-          };
-        })
-      );
+      // Transform the data to match our Product interface
+      const productsWithImages: Product[] = products.map((product: any) => ({
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        status: product.status as "pre_order" | "in_stock",
+        images: (product.product_images || [])
+          .sort((a: any, b: any) => (a.display_order || 0) - (b.display_order || 0))
+          .map((img: any) => img.image_url),
+      }));
 
       return productsWithImages;
     },
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
   });
 };
