@@ -3,7 +3,7 @@ import { MessageCircle } from "lucide-react";
 
 const WhatsAppCTA = () => {
   const handleWhatsAppClick = () => {
-    window.open("https://chat.whatsapp.com/LOzISmHehixCiYon4yM1np?mode=wwt", "_blank");
+    window.open("https://chat.whatsapp.com/LOzISmHehixCiYon4yM1np", "_blank");
   };
 
   return (
