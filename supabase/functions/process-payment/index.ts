@@ -1,7 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const FLUTTERWAVE_SECRET_KEY = Deno.env.get("FLUTTERWAVE_SECRET_KEY");
 const FLUTTERWAVE_BASE_URL = "https://api.flutterwave.com/v3";
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -20,9 +23,11 @@ serve(async (req) => {
       throw new Error("Flutterwave secret key not configured");
     }
 
+    const txRef = `${product_id}-${Date.now()}`;
+
     // Create payment with Flutterwave
     const paymentPayload = {
-      tx_ref: `${product_id}-${Date.now()}`,
+      tx_ref: txRef,
       amount: amount,
       currency: "NGN",
       redirect_url: `${req.headers.get("origin") || "http://localhost:8080"}/payment-success`,
@@ -43,6 +48,8 @@ serve(async (req) => {
       },
     };
 
+    console.log("Creating Flutterwave payment:", JSON.stringify(paymentPayload));
+
     const response = await fetch(`${FLUTTERWAVE_BASE_URL}/payments`, {
       method: "POST",
       headers: {
@@ -53,8 +60,32 @@ serve(async (req) => {
     });
 
     const data = await response.json();
+    console.log("Flutterwave response:", JSON.stringify(data));
 
     if (data.status === "success") {
+      // Create order in database
+      if (SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
+        const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+        
+        const { error: orderError } = await supabase.from("orders").insert({
+          customer_name: name,
+          customer_email: email,
+          customer_phone: phone_number,
+          product_id: product_id,
+          product_name: product_name,
+          quantity: quantity,
+          total_amount: `₦${amount.toLocaleString()}`,
+          status: "pending",
+          payment_reference: txRef,
+        });
+
+        if (orderError) {
+          console.error("Error creating order:", orderError);
+        } else {
+          console.log("Order created successfully with reference:", txRef);
+        }
+      }
+
       return new Response(
         JSON.stringify({ payment_link: data.data.link }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }

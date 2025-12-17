@@ -7,9 +7,13 @@ import Index from "./pages/Index";
 import Products from "./pages/Products";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import Admin from "./pages/Admin";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import NotFound from "./pages/NotFound";
+import { AdminLayout } from "./components/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import AdminProducts from "./pages/admin/Products";
+import Orders from "./pages/admin/Orders";
+import Analytics from "./pages/admin/Analytics";
 
 const queryClient = new QueryClient();
 
@@ -24,8 +28,16 @@ const App = () => (
           <Route path="/products" element={<Products />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/admin" element={<Admin />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="analytics" element={<Analytics />} />
+          </Route>
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
