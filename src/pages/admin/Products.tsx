@@ -283,7 +283,7 @@ export default function Products() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="pre_order" id="pre_order" />
-                    <Label htmlFor="pre_order" className="cursor-pointer">Pre-Order (40-day landing)</Label>
+                    <Label htmlFor="pre_order" className="cursor-pointer">Pre-Order (90-day landing)</Label>
                   </div>
                 </RadioGroup>
               </div>
