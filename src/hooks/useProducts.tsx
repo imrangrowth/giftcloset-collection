@@ -8,6 +8,7 @@ export interface Product {
   price: string;
   status: "pre_order" | "in_stock";
   images: string[];
+  stock_quantity: number;
 }
 
 export const useProducts = () => {
@@ -23,6 +24,7 @@ export const useProducts = () => {
           description,
           price,
           status,
+          stock_quantity,
           product_images (
             image_url,
             display_order
@@ -39,6 +41,7 @@ export const useProducts = () => {
         description: product.description,
         price: product.price,
         status: product.status as "pre_order" | "in_stock",
+        stock_quantity: product.stock_quantity || 0,
         images: (product.product_images || [])
           .sort((a: any, b: any) => (a.display_order || 0) - (b.display_order || 0))
           .map((img: any) => img.image_url),

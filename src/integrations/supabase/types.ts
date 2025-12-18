@@ -20,6 +20,8 @@ export type Database = {
           customer_email: string
           customer_name: string
           customer_phone: string | null
+          delivery_address: string | null
+          delivery_method: string
           id: string
           payment_reference: string | null
           product_id: string | null
@@ -34,6 +36,8 @@ export type Database = {
           customer_email: string
           customer_name: string
           customer_phone?: string | null
+          delivery_address?: string | null
+          delivery_method?: string
           id?: string
           payment_reference?: string | null
           product_id?: string | null
@@ -48,6 +52,8 @@ export type Database = {
           customer_email?: string
           customer_name?: string
           customer_phone?: string | null
+          delivery_address?: string | null
+          delivery_method?: string
           id?: string
           payment_reference?: string | null
           product_id?: string | null
@@ -107,6 +113,7 @@ export type Database = {
           name: string
           price: string
           status: string
+          stock_quantity: number
           updated_at: string | null
         }
         Insert: {
@@ -116,6 +123,7 @@ export type Database = {
           name: string
           price: string
           status?: string
+          stock_quantity?: number
           updated_at?: string | null
         }
         Update: {
@@ -125,6 +133,7 @@ export type Database = {
           name?: string
           price?: string
           status?: string
+          stock_quantity?: number
           updated_at?: string | null
         }
         Relationships: []

@@ -16,6 +16,7 @@ export default function Products() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [stockQuantity, setStockQuantity] = useState("0");
   const [status, setStatus] = useState<"pre_order" | "in_stock">("in_stock");
   const [images, setImages] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<Array<{ id: string; url: string }>>([]);
@@ -40,6 +41,7 @@ export default function Products() {
       setName(product.name);
       setDescription(product.description);
       setPrice(product.price);
+      setStockQuantity(String(product.stock_quantity || 0));
       setStatus(product.status as "pre_order" | "in_stock");
       setImages([]);
       
@@ -116,14 +118,26 @@ export default function Products() {
       if (editingId) {
         const { error: updateError } = await supabase
           .from("products")
-          .update({ name, description, price, status })
+          .update({ 
+            name, 
+            description, 
+            price, 
+            status,
+            stock_quantity: parseInt(stockQuantity) || 0
+          })
           .eq("id", editingId);
 
         if (updateError) throw updateError;
       } else {
         const { data: product, error: productError } = await supabase
           .from("products")
-          .insert({ name, description, price, status })
+          .insert({ 
+            name, 
+            description, 
+            price, 
+            status,
+            stock_quantity: parseInt(stockQuantity) || 0
+          })
           .select()
           .single();
 
@@ -161,14 +175,7 @@ export default function Products() {
 
       toast.success(editingId ? "Product updated successfully!" : "Product added successfully!");
       
-      setName("");
-      setDescription("");
-      setPrice("");
-      setStatus("in_stock");
-      setImages([]);
-      setExistingImages([]);
-      setEditingId(null);
-      
+      resetForm();
       refetch();
       
     } catch (error: any) {
@@ -184,9 +191,25 @@ export default function Products() {
     setName("");
     setDescription("");
     setPrice("");
+    setStockQuantity("0");
     setStatus("in_stock");
     setImages([]);
     setExistingImages([]);
+  };
+
+  const handleStockUpdate = async (productId: string, newQuantity: number) => {
+    try {
+      const { error } = await supabase
+        .from("products")
+        .update({ stock_quantity: newQuantity })
+        .eq("id", productId);
+
+      if (error) throw error;
+      toast.success("Stock updated!");
+      refetch();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to update stock");
+    }
   };
 
   return (
@@ -227,14 +250,28 @@ export default function Products() {
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="price">Price</Label>
-                <Input
-                  id="price"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  placeholder="e.g., ₦20,000"
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="price">Price</Label>
+                  <Input
+                    id="price"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    placeholder="e.g., ₦20,000"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="stockQuantity">Stock Quantity</Label>
+                  <Input
+                    id="stockQuantity"
+                    type="number"
+                    min="0"
+                    value={stockQuantity}
+                    onChange={(e) => setStockQuantity(e.target.value)}
+                    placeholder="0"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -359,7 +396,7 @@ export default function Products() {
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold truncate">{product.name}</h3>
                     <p className="text-sm text-muted-foreground truncate">{product.description}</p>
-                    <div className="flex items-center gap-2 mt-1">
+                    <div className="flex items-center gap-2 mt-1 flex-wrap">
                       <span className="text-sm font-medium">{product.price}</span>
                       <span className={`text-xs px-2 py-0.5 rounded-full ${
                         product.status === "in_stock" 
@@ -368,6 +405,16 @@ export default function Products() {
                       }`}>
                         {product.status === "in_stock" ? "In Stock" : "Pre-order"}
                       </span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Label className="text-xs">Stock:</Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        value={product.stock_quantity || 0}
+                        onChange={(e) => handleStockUpdate(product.id, parseInt(e.target.value) || 0)}
+                        className="h-7 w-20 text-xs"
+                      />
                     </div>
                   </div>
                   <div className="flex gap-1 ml-2">
