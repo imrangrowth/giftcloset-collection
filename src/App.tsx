@@ -8,6 +8,7 @@ import Products from "./pages/Products";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import TrackOrder from "./pages/TrackOrder";
 import NotFound from "./pages/NotFound";
 import { AdminLayout } from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/track-order" element={<TrackOrder />} />
           
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
