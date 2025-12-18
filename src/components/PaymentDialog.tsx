@@ -22,9 +22,18 @@ const PaymentDialog = ({ open, onOpenChange, productId, productName, price }: Pa
   const [quantity, setQuantity] = useState("1");
   const [loading, setLoading] = useState(false);
 
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   const handlePayment = async () => {
     if (!email || !name || !phone) {
       toast.error("Please fill all fields");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      toast.error("Please enter a valid email address");
       return;
     }
 
@@ -61,12 +70,12 @@ const PaymentDialog = ({ open, onOpenChange, productId, productName, price }: Pa
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Complete Your Order</DialogTitle>
-          <DialogDescription className="space-y-1">
-            <div>{productName} - {price}</div>
-            <div className="text-xs italic pt-1">
-              You will be contacted after successful payment to confirm your order details.
-            </div>
+          <DialogDescription>
+            {productName} - {price}
           </DialogDescription>
+          <p className="text-xs text-muted-foreground italic mt-1">
+            You will be contacted after successful payment to confirm your order details.
+          </p>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
