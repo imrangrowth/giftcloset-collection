@@ -19,6 +19,7 @@ const Navigation = () => {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Products", path: "/products" },
+    { name: "Track Order", path: "/track-order" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
     { name: "Admin", path: "/admin" },
