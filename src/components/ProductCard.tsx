@@ -63,7 +63,7 @@ const ProductCard = ({ id, images, name, description, price, status, stockQuanti
           <p className="text-lg font-semibold pt-1">{price}</p>
           {status === "pre_order" && (
             <p className="text-xs text-muted-foreground italic">
-              Delivery in 40 days
+              Delivery in 90 days
             </p>
           )}
           <Button 
