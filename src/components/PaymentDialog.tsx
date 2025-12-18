@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
@@ -13,13 +15,16 @@ interface PaymentDialogProps {
   productId: string;
   productName: string;
   price: string;
+  stockQuantity: number;
 }
 
-const PaymentDialog = ({ open, onOpenChange, productId, productName, price }: PaymentDialogProps) => {
+const PaymentDialog = ({ open, onOpenChange, productId, productName, price, stockQuantity }: PaymentDialogProps) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [quantity, setQuantity] = useState("1");
+  const [deliveryMethod, setDeliveryMethod] = useState<"delivery" | "pickup">("delivery");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
   const [loading, setLoading] = useState(false);
 
   const isValidEmail = (email: string) => {
@@ -28,12 +33,23 @@ const PaymentDialog = ({ open, onOpenChange, productId, productName, price }: Pa
 
   const handlePayment = async () => {
     if (!email || !name || !phone) {
-      toast.error("Please fill all fields");
+      toast.error("Please fill all required fields");
       return;
     }
 
     if (!isValidEmail(email)) {
       toast.error("Please enter a valid email address");
+      return;
+    }
+
+    if (deliveryMethod === "delivery" && !deliveryAddress.trim()) {
+      toast.error("Please enter your delivery address");
+      return;
+    }
+
+    const qty = parseInt(quantity);
+    if (stockQuantity > 0 && qty > stockQuantity) {
+      toast.error(`Only ${stockQuantity} items available in stock`);
       return;
     }
 
@@ -44,16 +60,17 @@ const PaymentDialog = ({ open, onOpenChange, productId, productName, price }: Pa
           email,
           name,
           phone_number: phone,
-          amount: parseFloat(price.replace(/[₦,]/g, "")) * parseInt(quantity),
+          amount: parseFloat(price.replace(/[₦,]/g, "")) * qty,
           product_id: productId,
           product_name: productName,
-          quantity: parseInt(quantity),
+          quantity: qty,
+          delivery_method: deliveryMethod,
+          delivery_address: deliveryMethod === "delivery" ? deliveryAddress : null,
         },
       });
 
       if (error) throw error;
 
-      // Redirect to Flutterwave payment page
       if (data?.payment_link) {
         window.location.href = data.payment_link;
       }
@@ -67,7 +84,7 @@ const PaymentDialog = ({ open, onOpenChange, productId, productName, price }: Pa
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Complete Your Order</DialogTitle>
           <DialogDescription>
@@ -117,16 +134,47 @@ const PaymentDialog = ({ open, onOpenChange, productId, productName, price }: Pa
               id="quantity"
               type="number"
               min="1"
+              max={stockQuantity > 0 ? stockQuantity : undefined}
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
             />
+            {stockQuantity > 0 && (
+              <p className="text-xs text-muted-foreground">{stockQuantity} available in stock</p>
+            )}
           </div>
+
+          <div className="space-y-2">
+            <Label>Delivery Method</Label>
+            <RadioGroup value={deliveryMethod} onValueChange={(value: "delivery" | "pickup") => setDeliveryMethod(value)}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="delivery" id="delivery" />
+                <Label htmlFor="delivery" className="cursor-pointer">Delivery</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="pickup" id="pickup" />
+                <Label htmlFor="pickup" className="cursor-pointer">Pickup</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          {deliveryMethod === "delivery" && (
+            <div className="space-y-2">
+              <Label htmlFor="address">Delivery Address</Label>
+              <Textarea
+                id="address"
+                value={deliveryAddress}
+                onChange={(e) => setDeliveryAddress(e.target.value)}
+                placeholder="Enter your full delivery address"
+                rows={3}
+              />
+            </div>
+          )}
 
           <div className="pt-4 border-t">
             <div className="flex justify-between mb-4">
               <span className="font-semibold">Total:</span>
               <span className="font-bold text-lg">
-                ₦{(parseFloat(price.replace(/[₦,]/g, "")) * parseInt(quantity)).toLocaleString()}
+                ₦{(parseFloat(price.replace(/[₦,]/g, "")) * parseInt(quantity || "1")).toLocaleString()}
               </span>
             </div>
 

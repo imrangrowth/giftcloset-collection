@@ -11,21 +11,30 @@ interface ProductCardProps {
   description: string;
   price: string;
   status: "pre_order" | "in_stock";
+  stockQuantity: number;
 }
 
-const ProductCard = ({ id, images, name, description, price, status }: ProductCardProps) => {
+const ProductCard = ({ id, images, name, description, price, status, stockQuantity }: ProductCardProps) => {
   const [showPayment, setShowPayment] = useState(false);
+
+  const isOutOfStock = status === "in_stock" && stockQuantity === 0;
 
   return (
     <div className="group">
       <div className="relative overflow-hidden bg-background transition-all duration-500">
         <div className="overflow-hidden relative">
-          <Badge 
-            className="absolute top-4 right-4 z-10"
-            variant={status === "pre_order" ? "default" : "secondary"}
-          >
-            {status === "pre_order" ? "Pre-Order" : "In Stock"}
-          </Badge>
+          <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
+            <Badge 
+              variant={status === "pre_order" ? "default" : isOutOfStock ? "destructive" : "secondary"}
+            >
+              {isOutOfStock ? "Out of Stock" : status === "pre_order" ? "Pre-Order" : "In Stock"}
+            </Badge>
+            {status === "in_stock" && stockQuantity > 0 && (
+              <Badge variant="outline" className="bg-background/80">
+                {stockQuantity} left
+              </Badge>
+            )}
+          </div>
           <Carousel className="w-full">
             <CarouselContent>
               {images.map((image, index) => (
@@ -62,8 +71,9 @@ const ProductCard = ({ id, images, name, description, price, status }: ProductCa
             size="sm" 
             className="mt-4"
             onClick={() => setShowPayment(true)}
+            disabled={isOutOfStock}
           >
-            {status === "pre_order" ? "Preorder Now" : "Buy Now"}
+            {isOutOfStock ? "Out of Stock" : status === "pre_order" ? "Preorder Now" : "Buy Now"}
           </Button>
         </div>
       </div>
@@ -74,6 +84,7 @@ const ProductCard = ({ id, images, name, description, price, status }: ProductCa
         productId={id}
         productName={name}
         price={price}
+        stockQuantity={stockQuantity}
       />
     </div>
   );
