@@ -46,7 +46,7 @@ export default function Dashboard() {
       title: "Pre-order Products",
       value: products.filter(p => p.status === "pre_order").length,
       icon: TrendingUp,
-      description: "40-day landing time",
+      description: "90-day landing time",
     },
   ];
 
