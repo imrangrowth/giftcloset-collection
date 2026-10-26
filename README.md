@@ -1,73 +1,55 @@
-# Welcome to your Lovable project
+# Gift Closet
 
-## Project info
+A React-based storefront for browsing products, placing orders, and managing a small online retail operation.
 
-**URL**: https://lovable.dev/projects/c332f18f-572a-4f3c-9514-97a19dc338b6
+## Overview
 
-## How can I edit this code?
+Gift Closet brings the customer-facing shopping experience and back-office tools into one web application. The source includes a product catalogue, an order-tracking route, a payment-success screen, and an admin area.
 
-There are several ways of editing your application.
+### Customer experience
+- Home page with featured products, reviews, and contact options
+- Product browsing and brand information
+- Order tracking and payment-success pages
+- WhatsApp contact entry point
 
-**Use Lovable**
+### Administration
+- Dashboard
+- Product management
+- Orders
+- Analytics
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c332f18f-572a-4f3c-9514-97a19dc338b6) and start prompting.
+These are routes and interfaces present in the codebase; this README does not imply that a production payment integration or deployment has been independently verified.
 
-Changes made via Lovable will be committed automatically to this repo.
+## Stack
 
-**Use your preferred IDE**
+TypeScript · React · Vite · Tailwind CSS · shadcn/ui · React Router · TanStack Query · Supabase client
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Run locally
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+**Requirements:** Node.js and npm.
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Other available scripts:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm run build
+npm run preview
+npm run lint
+```
 
-**Use GitHub Codespaces**
+Some features may require environment configuration or external services. Check the relevant source modules before enabling live payments or deploying.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project structure
 
-## What technologies are used for this project?
+- `src/pages/` — storefront and customer pages
+- `src/pages/admin/` — administration screens
+- `src/components/` — reusable interface components
+- `src/App.tsx` — application routes and providers
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/c332f18f-572a-4f3c-9514-97a19dc338b6) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+**Status:** Project repository. Features and integrations should be tested before production use.
